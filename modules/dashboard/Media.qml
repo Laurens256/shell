@@ -160,7 +160,7 @@ Item {
         ElideText {
             id: title
 
-            label: (Players.active?.trackTitle ?? qsTr("No media")) || qsTr("Unknown title")
+            label: Players.active ? (Players.active.trackTitle ?? qsTr("Unknown title")) : null
             color: Colours.palette.m3primary
             font.pointSize: Appearance.font.size.normal
         }
@@ -168,7 +168,7 @@ Item {
         ElideText {
             id: album
 
-            label: (Players.active?.trackAlbum ?? qsTr("No media")) || qsTr("Unknown album")
+            label: Players.active ? (Players.active.trackAlbum || qsTr("Unknown album")) : null
             color: Colours.palette.m3outline
             font.pointSize: Appearance.font.size.small
         }
@@ -176,7 +176,7 @@ Item {
         ElideText {
             id: artist
 
-            label: (Players.active?.trackArtist ?? qsTr("No media")) || qsTr("Unknown artist")
+            label: Players.active ? (Players.active?.trackArtist || qsTr("Unknown artist")) : qsTr("No media")
             color: Colours.palette.m3secondary
         }
 
@@ -334,6 +334,7 @@ Item {
                 anchors.left: parent.left
 
                 text: root.lengthStr(Players.active?.position ?? -1)
+                visible: Players.active?.length > 0
                 color: Colours.palette.m3onSurfaceVariant
                 font.pointSize: Appearance.font.size.small
             }
@@ -344,14 +345,16 @@ Item {
                 anchors.right: parent.right
 
                 text: root.lengthStr(Players.active?.length ?? -1)
+                visible: Players.active?.length > 0
                 color: Colours.palette.m3onSurfaceVariant
                 font.pointSize: Appearance.font.size.small
             }
         }
 
         RowLayout {
-            Layout.alignment: Qt.AlignHCenter
+            // Layout.alignment: Qt.AlignHCenter
             spacing: Appearance.spacing.small
+            implicitWidth: controls.width
 
             PlayerControl {
                 icon: "flip_to_front"
@@ -373,8 +376,7 @@ Item {
                 property bool expanded
 
                 Layout.alignment: Qt.AlignVCenter
-
-                implicitWidth: slider.implicitWidth / 2
+                Layout.fillWidth: true
                 implicitHeight: currentPlayer.implicitHeight + Appearance.padding.small * 2
                 radius: Appearance.rounding.small
                 color: Colours.palette.m3surfaceContainer
@@ -390,20 +392,29 @@ Item {
                 RowLayout {
                     id: currentPlayer
 
+                    width: parent.width - Appearance.padding.smaller * 2
                     anchors.centerIn: parent
+                    // anchors.margins: Appearance.padding.small
                     spacing: Appearance.spacing.small
+                    // Layout.alignment: Qt.AlignHCenter
 
                     IconImage {
+                        id: testt
+
                         Layout.fillHeight: true
                         implicitWidth: height
-                        source: Players.active ? Icons.getAppIcon(Players.active.identity, "image-missing") : "image-missing"
+                        visible: !!Players.active
+                        source: Icons.getAppIcon(Players.active?.identity, "image-missing")
                     }
 
                     StyledText {
-                        Layout.fillWidth: true
-                        text: Players.active?.identity ?? "No players"
+                        text: "Lorem ipsum dolor amanet very long name with overflow"
+                        // text: Players.active?.identity ?? qsTr("No players")
                         color: Colours.palette.m3onSecondaryContainer
+                        font.pointSize: Appearance.font.size.small
+                        Layout.fillWidth: true
                         elide: Text.ElideRight
+                        horizontalAlignment: Text.AlignHCenter
                     }
                 }
 
