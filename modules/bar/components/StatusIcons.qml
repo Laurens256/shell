@@ -28,7 +28,7 @@ Item {
         },
         {
             name: "bluetooth",
-            item: bluetoothGroup,
+            item: bluetoothIcon,
             enabled: Config.bar.status.showBluetooth
         },
         {
@@ -95,70 +95,29 @@ Item {
             }
         }
 
-        // Bluetooth section (grouped for hover area)
+        // Bluetooth icon
         Loader {
-            id: bluetoothGroup
+            id: bluetoothIcon
 
             asynchronous: true
             active: Config.bar.status.showBluetooth
             visible: active
 
-            sourceComponent: ColumnLayout {
-                spacing: Appearance.spacing.smaller / 2
-
-                // Bluetooth icon
-                MaterialIcon {
-                    animate: true
+            sourceComponent: MaterialIcon {
+                animate: true
                     text: {
-                        const adapter = Bluetooth.defaultAdapter;
                         if (!Bluetooth.defaultAdapter?.enabled) {
                             return "bluetooth_disabled"
                         }
 
-                        const isConnected = !!Bluetooth.devices.values.find(d => d.connected);
+                        const isConnected = Bluetooth.devices.values.some(d => d.connected);
                         if (isConnected) {
                             return "bluetooth_connected"
                         }
 
                         return "bluetooth";
                     }
-                    color: root.colour
-                }
-
-                // Connected bluetooth devices
-                Repeater {
-                    model: ScriptModel {
-                        values: Bluetooth.devices.values.filter(d => d.state !== BluetoothDeviceState.Disconnected)
-                    }
-
-                    MaterialIcon {
-                        id: device
-
-                        required property BluetoothDevice modelData
-
-                        animate: true
-                        text: Icons.getBluetoothIcon(modelData.icon)
-                        color: root.colour
-                        fill: 1
-
-                        SequentialAnimation on opacity {
-                            running: device.modelData.state !== BluetoothDeviceState.Connected
-                            alwaysRunToEnd: true
-                            loops: Animation.Infinite
-
-                            Anim {
-                                from: 1
-                                to: 0
-                                easing.bezierCurve: Appearance.anim.curves.standardAccel
-                            }
-                            Anim {
-                                from: 0
-                                to: 1
-                                easing.bezierCurve: Appearance.anim.curves.standardDecel
-                            }
-                        }
-                    }
-                }
+                color: root.colour
             }
         }
 
