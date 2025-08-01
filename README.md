@@ -156,6 +156,7 @@ All configuration options are in `~/.config/caelestia/shell.json`.
     },
     "bar": {
         "dragThreshold": 20,
+        "externalAudioProgram": ["pavucontrol"],
         "persistent": true,
         "showOnHover": true,
         "status": {
@@ -224,7 +225,14 @@ All configuration options are in `~/.config/caelestia/shell.json`.
       "useTwelveHourClock": false
     },
     "session": {
-        "dragThreshold": 30
+        "dragThreshold": 30,
+        "vimKeybinds": false,
+        "commands": {
+            "logout": ["loginctl", "terminate-user", ""],
+            "shutdown": ["systemctl", "poweroff"],
+            "hibernate": ["systemctl", "hibernate"],
+            "reboot": ["systemctl", "reboot"]
+        }
     }
 }
 ```
