@@ -209,7 +209,7 @@ ColumnLayout {
                                     implicitHeight: adapterInner.implicitHeight + Appearance.padding.normal * 2
 
                                     StateLayer {
-                                        enabled: adapterPickerButton.expanded
+                                        disabled: !adapterPickerButton.expanded
 
                                         function onClicked(): void {
                                             adapterPickerButton.expanded = false;
@@ -376,7 +376,7 @@ ColumnLayout {
                     implicitWidth: implicitHeight
                     implicitHeight: cancelEditIcon.implicitHeight + Appearance.padding.smaller * 2
 
-                    radius: implicitHeight / 2
+                    radius: Appearance.rounding.small
                     color: Colours.palette.m3secondaryContainer
                     opacity: root.session.bt.editingAdapterName ? 1 : 0
                     scale: root.session.bt.editingAdapterName ? 1 : 0.5
@@ -416,7 +416,7 @@ ColumnLayout {
                     implicitWidth: implicitHeight
                     implicitHeight: editIcon.implicitHeight + Appearance.padding.smaller * 2
 
-                    radius: root.session.bt.editingAdapterName ? implicitHeight / 2 : Appearance.rounding.small
+                    radius: root.session.bt.editingAdapterName ? Appearance.rounding.small : implicitHeight / 2
                     color: root.session.bt.editingAdapterName ? Colours.palette.m3primary : "transparent"
 
                     StateLayer {
