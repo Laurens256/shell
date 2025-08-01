@@ -109,7 +109,19 @@ Item {
                 // Bluetooth icon
                 MaterialIcon {
                     animate: true
-                    text: Bluetooth.defaultAdapter?.enabled ? "bluetooth" : "bluetooth_disabled"
+                    text: {
+                        const adapter = Bluetooth.defaultAdapter;
+                        if (!Bluetooth.defaultAdapter?.enabled) {
+                            return "bluetooth_disabled"
+                        }
+
+                        const isConnected = !!Bluetooth.devices.values.find(d => d.connected);
+                        if (isConnected) {
+                            return "bluetooth_connected"
+                        }
+
+                        return "bluetooth";
+                    }
                     color: root.colour
                 }
 
